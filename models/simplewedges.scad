@@ -2,7 +2,7 @@ include <BOSL2/std.scad>
 
 handle_size = 58;
 
-module proto1(size,indent_side_length,height_ratio,screw_width,screw_distance) {
+module proto1(size,screw_width,screw_distance) {
   difference() {
     union() {
       disk_claw(size);
@@ -12,7 +12,7 @@ module proto1(size,indent_side_length,height_ratio,screw_width,screw_distance) {
   }
 }
 
-module proto2(size,indent_side_length,height_ratio,screw_width,screw_distance) {
+module proto2(size,screw_width,screw_distance) {
   difference() {
     union() {
       rotate([0,0,180])
@@ -35,12 +35,20 @@ module handle2(size) {
 
 module disk_claw(size) {
   difference() {
-    cylinder(d=size.x+10,h=10,anchor=BOTTOM);
+    disk(size.x+10,10);
     down(0.5)
       cuboid([size.x,size.y,11],anchor=FRONT+BOTTOM);
     down(0.5)
-    cylinder(d=size.x,h=11,anchor=BOTTOM);
+      disk_hole(size.x,80);
   }
+}
+
+module disk(da,height) {
+  cylinder(d=da,h=height,anchor=BOTTOM);
+}
+
+module disk_hole(da,height) {
+  cylinder(r1=da/2, r2=0,h=height,anchor=BOTTOM);
 }
 
 module screw_holes1(size,screw_width,screw_distance) {
